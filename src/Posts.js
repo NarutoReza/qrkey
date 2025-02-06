@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import './style.css';
+import ReactPaginate from 'react-paginate';
 
 function Posts() {
   const location = useLocation();
@@ -12,7 +13,20 @@ function Posts() {
   }, [location.state]);
 
   const posts = location.state;
-  console.log(posts);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = posts?.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(posts?.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % posts?.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+
   return (
     <div className='post-container'>
       <div
@@ -21,6 +35,21 @@ function Posts() {
       >
         <p>←</p>
         <p>Go back</p>
+      </div>
+      <div className="selector">
+        <select
+          onChange={e => {
+            setItemsPerPage(parseInt(e.target.value));
+          }}
+          value={itemsPerPage}
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+        </select>
+        <label>items</label>
       </div>
       <table>
         <thead>
@@ -31,10 +60,10 @@ function Posts() {
         </thead>
         <tbody>
           {
-            posts?.length > 0
-            ? posts?.map((post, index) => (
+            currentItems?.length > 0
+            ? currentItems?.map((post, index) => (
               <tr key={index}>
-                <td>{post?.title}</td>
+                <td className='postsFirst'>{post?.title}</td>
                 <td>{post?.body}</td>
               </tr>
             )) : (
@@ -45,6 +74,28 @@ function Posts() {
           }
         </tbody>
       </table>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< prev"
+        renderOnZeroPageCount={null}
+
+        containerClassName="container-class"
+
+        className="pagination-class-name"
+
+        pageClassName="pagination-li"
+        pageLinkClassName="pagination-li-a"
+
+        breakClassName="pagination-ellipsis"
+        breakLinkClassName="pagination-ellipsis-a"
+
+        activeClassName="pagination-active-li"
+        activeLinkClassName	="pagination-active-a"
+      />
     </div>
   )
 };

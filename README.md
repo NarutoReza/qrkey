@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# USERS and POSTS website using React.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+To start the website you must clone it first and do a `npm install` to install the dependencies.
 
-## Available Scripts
+I have used axios, react-paginate for pagination, react-toastify for toasters.
 
-In the project directory, you can run:
+After you have installed the packages, run `npm start` to start the server. It will open a localhost with a port of 3000.
 
-### `npm start`
+As I have understand from the documentation, I have created an users and their posts table.
+When you open the site, the index page will have the list of users table.
+If you click on anywhere in a row, it will take you to the user's posts page. I have highlighted the user name as a link, for user understandability.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+I have called both the APIs initially.
+As users APIs gives the users list, I have to call it initially. But the posts API data contains everyone's data, so I have called it initially too, so that I don't have to call it again and again.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Now, when I am sending to the posts page, I am sending the user's post as a state from navigate, but first I am filtering out the clicking user's posts only. Now, if you directly try to go to the page, you won't be able to go. As posts aren't going via state.
 
-### `npm test`
+There you will be able to see the posts as a table format. Same as user's list table.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I have made the table initially take 5 items per pagination page. You can change the items per page as per the selector, you can change the pages from pagination.
 
-### `npm run build`
+The table has a width of 900px, below that width screen it has a scrolling function, so that the look does not go bad for each column.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Now, to go back to the user's list page from posts list page, you have a `go back` button on top.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I have added a loader before the API fetches the data. If fetches successfully, the data shows. If failed, the table says 'No data available' and a toaster comes up with a error message.

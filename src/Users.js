@@ -10,7 +10,7 @@ function Users() {
   const [userList, setUserList] = useState([]);
   const [userLoading, setUserLoading] = useState(true);
   const [postList, setPostList] = useState([]);
-  const itemsPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = userList?.slice(itemOffset, endOffset);
@@ -25,6 +25,7 @@ function Users() {
         })
         .catch(() => {
           setUserList([]);
+          toast.error("We could not fetch the user's list");
         })
         .finally(() => {
           setUserLoading(false);
@@ -35,7 +36,7 @@ function Users() {
   }, []);
 
   useEffect(() => {
-    const getUserList = async() => {
+    const getPostsList = async() => {
       axios
         .get('https://jsonplaceholder.typicode.com/posts')
         .then((res) => {
@@ -46,7 +47,7 @@ function Users() {
         })
     }
 
-    getUserList();
+    getPostsList();
   }, []);
 
   const goToUserPosts = (id) => {
@@ -69,6 +70,21 @@ function Users() {
   return (
     <div className="main-container">
       <ToastContainer />
+      <div className="selector">
+        <select
+          onChange={e => {
+            setItemsPerPage(parseInt(e.target.value));
+          }}
+          value={itemsPerPage}
+        >
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+        </select>
+        <label>items</label>
+      </div>
       <table>
         <thead>
           <tr>
@@ -90,7 +106,7 @@ function Users() {
             ? currentItems?.map((user, index) => (
               <tr key={index} onClick={() => {goToUserPosts(user?.id)}} style={{cursor: 'pointer'}}>
                 <td style={{textAlign: 'center'}}>{user?.id}</td>
-                <td>{user?.name}</td>
+                <td style={{color: 'blue', textDecoration: 'underline'}}>{user?.name}</td>
                 <td>{user?.email}</td>
                 <td>{user?.address?.street}, {user?.address?.suite}, {user?.address?.city}, {user?.address?.zipcode}</td>
                 <td>{user?.company?.name}</td>
@@ -111,8 +127,19 @@ function Users() {
         pageCount={pageCount}
         previousLabel="< prev"
         renderOnZeroPageCount={null}
-        className="paginate-container"
-        pageClassName="paginate-page"
+
+        containerClassName="container-class"
+
+        className="pagination-class-name"
+
+        pageClassName="pagination-li"
+        pageLinkClassName="pagination-li-a"
+
+        breakClassName="pagination-ellipsis"
+        breakLinkClassName="pagination-ellipsis-a"
+
+        activeClassName="pagination-active-li"
+        activeLinkClassName	="pagination-active-a"
       />
     </div>
   )
